@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head><link rel="stylesheet" href="vae-embed-styles.css"></head>
+    <body>
+        <div>
+     <!-- <iframe src="https://portal.furioos.com/embed/8ZEewSkpwyuEnn8pN?whiteLabel=true&hideTitle=true&hideToolbar=false&autoRun=false" width="100%" height="100%" allowfullscreen="true" style="border: none;"></iframe>
+     -->
+      <p>D</p>  
+      <!--<iframe src="https://portal.furioos.com/embed/Yne23d32cM4e9wiKi" width="560" height="315" allowfullscreen="true" style="border: none;"></iframe>
+      -->
+    </div>
+    <!--
+    <p id="p1" style="color:blue;font-size:60px;">...Scanning for orientation and screen width...</p>
+    <p id="p2" style="color:blue;font-size:60px;"></p>
+    <p id="p3" style="color:blue;font-size:60px;">...Attempting to lock in landscape...</p> -->
+      <script>
+const SDK = require("furioos-sdk");
+const Player = SDK.Player;
+let isLoaded = false;
+let isSocketConnected = false;
+
+// Change this in order to point the Furioos player to a different build.
+// The value comes from the Share -> SDK settings of a Furioos build.
+const sdkLinkCode = 'ntRDagNfkXK7FBJQp';
+
+// CONF
+const player = new Player(sdkLinkCode, 'furioos-container', {
+  whiteLabel: true,
+  hideTitle: true,
+  hideToolbar: true,
+  hidePlayButton: false,
+  // debugAppMode: true, // Uncomment for debugging with local Unity play mode and set the "FURIOOS_DEBUG" define in Unity player settings
+  // overridedURL: 'http://localhost:8080'
+});
+
+const iframe = document.getElementById('furioos-sdk-iframe');
+if (!player.debugAppMode) {
+  iframe.style.position = "absolute";
+  iframe.style.borderWidth = "0px";
+  iframe.style.top = "0px";
+  iframe.style.left = "0px";
+  iframe.style.bottom = "0px";
+  iframe.style.right = "0px";
+  iframe.style.width = "100%";
+  iframe.style.height = "100%";
+  iframe.style.position = "absolute";
+} else {
+  console.log("RUNNING IN DEBUG MODE");
+}
+
+function isFullscreen() {
+  return document.fullscreenElement != null;
+}
+
+function sendMaximizeMessage() {
+  if (isSocketConnected) {
+    console.log('Sent: "Maximize"', new Date());
+    player.sendSDKMessage("Maximize");
+  }
+}
+
+function sendMinimizeMessage() {
+  if (isSocketConnected) {
+    console.log('Sent: "Minimize"', new Date());
+    player.sendSDKMessage("Minimize");
+  }
+}
+
+function maximize() {
+  if (document.fullscreenEnabled && !isFullscreen()) {
+    console.log("maximize() called");
+
+    const container = document.getElementById('furioos-container');
+    container.requestFullscreen().catch(err => {
+      alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+    });
+  }
+}
+
+function minimize() {
+  if (document.fullscreenEnabled && isFullscreen()) {
+    console.log("minimize() called");
+
+    document.exitFullscreen().catch(err => {
+      alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+    });
+  }
+}
+
+document.getElementById('button-start').addEventListener("click", () => {
+  if (isLoaded) {
+    gtag('event', 'started_vae');
+    console.log("starting");
+
+    maximize();
+  
+    player.start();
+
+    const loader = document.getElementById('loading-spinner');
+    loader.style.visibility = 'visible';
+    const startButton = document.getElementById('button-start');
+    startButton.style.visibility = 'hidden';
+  }
+});
+
+// Allows fullscreen to be properly escaped by browser controls such as ESC or browser-specific GUI
+addEventListener('fullscreenchange', event => { 
+  if (isFullscreen()) { // Changed to fullscreen
+    const container = document.getElementById('furioos-container');
+    var cover = document.getElementById('cover');
+    container.appendChild(cover);
+    // Call to ensure in-app UI is updated if browser controls are used to maximize
+    sendMaximizeMessage();
+  } else { // Changed to minimized
+    const container = document.getElementById('vae-embed-container');
+    var cover = document.getElementById('cover');
+    container.appendChild(cover);
+    // Call to ensure in-app UI is updated if browser controls are used to minimize
+    sendMinimizeMessage();
+  }
+});
+
+/////////////////////////////////////////////
+// Player State Callbacks
+
+player.onLoad(() => {
+  console.info("Do something on load");
+  isLoaded = true;
+
+  const startButton = document.getElementById('button-start');
+  startButton.style.visibility = 'visible';
+
+  const loader = document.getElementById('loading-spinner');
+  loader.style.visibility = 'hidden';
+});
+
+player.onStats((stats) => {
+  //console.log("SDK client FIRED: Stats received", stats);
+});
+
+// Bind SDK messages
+player.onSDKMessage(function(data) {
+  console.log("SDK Message Received:", data);
+  if (data == "VAE Started") {
+    var cover = document.getElementById('cover');
+    cover.style.visibility = 'hidden';
+    const loader = document.getElementById('loading-spinner');
+    loader.style.visibility = 'hidden';
+
+    isSocketConnected = true;
+    // If we start maximized then updated the in-app fullscreen button to reflect this
+    if (isFullscreen()) {
+      sendMaximizeMessage();
+    }
+
+  } else if (data == "Maximize") {
+    maximize();
+  } else if (data == "Minimize") {
+    minimize();
+  }
+  else if (data == "ExtendSession") {
+    gtag('event', 'extend_session');
+  }
+});
+
+// Bind application install progress
+player.onAppInstallProgress(function(value) {
+  console.log("SDK client FIRED: App install progress", value);
+});
+
+// Bind application install success
+player.onAppInstallSuccess(function() {
+  console.log("SDK client FIRED: App install success");
+});
+
+// Bind application install fail
+player.onAppInstallFail(function() {
+  console.log("SDK client FIRED: App install fail");
+});
+
+// Bind application start
+player.onAppStart(function() {
+  console.log("SDK client FIRED: App start");
+});
+
+// Bind stream start
+player.onStreamStart(function() {
+  console.log("SDK client FIRED: Stream start");
+});
+
+// Bind user active
+player.onUserActive(function() {
+  console.log("SDK client FIRED: User Active");
+});
+
+// Bind user inactive
+player.onUserInactive(function() {
+  console.log("SDK client FIRED: User Inactive");
+});
+
+// Bind session stoppeds
+player.onSessionStopped(function() {
+  console.log("SDK client FIRED: Session Stopped");
+});
+
+/////////////////////////////////////////////
+// Debug Buttons
+
+// document.getElementById('button_setUserActive').addEventListener("click", () => {
+//   console.log("Call setUserActive");
+//   player.setUserActive();
+// });
+
+// document.getElementById('button_getServerAvailability').addEventListener("click", () => {
+//   console.log("Call getServerAvailability");
+//   player.getServerAvailability((data) => {
+//     console.log("Response getServerAvailability", data);
+//   }, (error) => {
+//     console.log("ERROR getServerAvailability", error);
+//   });
+// });
+
+// document.getElementById('button_callmaximize').addEventListener("click", () => {
+//   console.log("Call maximize");
+//   //player.maximize();
+//   sendMaximizeMessage();
+// });
+
+// document.getElementById('button_minimize').addEventListener("click", () => {
+//   console.log("Call minimize");
+//   //player.minimize();
+//   sendMinimizeMessage();
+// });
+
+// document.getElementById('button_setThumb').addEventListener("click", () => {
+//   console.log("Call setThumb");
+//   player.setThumbnailUrl("https://images.unsplash.com/photo-1599499462686-3ed0badee8c3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3302&q=80");
+// });
+
+// document.getElementById('button_getServerMetadata').addEventListener("click", () => {
+//   console.log("Call getServerMetadata");
+//   player.getServerMetadata((data) => {
+//     console.log("Response getServerMetadata", data);
+//   }, (error) => {
+//     console.log("ERROR getServerMetadata", error);
+//   });
+// });
+      </script>
+          <div id="vae-embed-container">
+            <div id="cover">
+              <img id="loading-bg" src="assets/LoadingPageBackground.png">
+              <img id="loading-spinner" src="assets/loadingSpinner.gif">
+            </div>
+            <button id="button-start">
+              <img id="button-start-image" src="assets/PlayButton.png">
+            </button>
+            <div id="furioos-container">
+            </div>
+          </div>
+    </body>
+    </html>
