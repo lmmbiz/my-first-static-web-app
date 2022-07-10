@@ -21,10 +21,10 @@
 
         screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
 
-        if (screen.lockOrientationUniversal("landscape-primary")) {
-            document.getElementById("p3").innerHTML = "Lock in landscape OK"; 
+        if (screen.orientation.lock("landscape-primary")) {
+            document.getElementById("p3").innerHTML = "screen.orientation.lock Lock in landscape OK"; 
         } else {
-            document.getElementById("p3").innerHTML = "Lock in landscape FAILED"; 
+            document.getElementById("p3").innerHTML = "screen.orientation.lock Lock in landscape FAILED"; 
         }
       </script>
     </body>
