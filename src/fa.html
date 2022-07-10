@@ -2,14 +2,23 @@
 <html>
   <head>
     <style>
-        #scaled-frame {
-            width: device-width;
-            height: device-height;
-            }
-    </style>
+        * {
+        height: 100%; width: 100%; top: -20px; left: 0px;
+        }
+        
+        @media (orientation: portrait) {
+        body {
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        }
+        }
+        </style>
   </head>
   <body>
-      <p>!A</p>
+      <p>!B</p>
     <div id="wrap">
       <iframe id="scaled-frame" src="https://portal.furioos.com/embed/8ZEewSkpwyuEnn8pN?whiteLabel=true&hideTitle=true&hideToolbar=false"></iframe>
     </div>
