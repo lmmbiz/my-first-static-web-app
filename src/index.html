@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <body>
-      <p id="p1">...Scanning for orientation and screen width...</p>
-      <p id="p2"></p>
+      <p id="p1" style="color:blue;font-size:30px;">...Scanning for orientation and screen width...</p>
+      <p id="p2" style="color:blue;font-size:30px;"></p>
       <script>
         document.getElementById("p1").innerHTML = "window.orientation " + window.orientation + "    screen.width " + screen.width;
         document.getElementById("p2").innerHTML = window.orientation == 90 ? "Detecting LANDSCAPE" : "Detecting PORTAIT";
