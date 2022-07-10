@@ -29,7 +29,13 @@
         @media all and (orientation:landscape)
         {
             #scaled-frame {
-                zoom: 3;
+                transform: rotate(-90deg);
+                transform-origin: left top;
+                width: 100vh;
+                overflow-x: hidden;
+                position: absolute;
+                top: 100%;
+                left: 0;
             }
         }
       }
