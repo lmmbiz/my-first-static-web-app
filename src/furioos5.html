@@ -9,8 +9,8 @@
         overflow: hidden;
       }
       #scaled-frame {
-        width: 90%;
-        height: 90%;
+        width: device-width;
+        height: device-height;
         border: 0px;
       }
       #scaled-frame {
@@ -25,6 +25,12 @@
       @media screen and (-webkit-min-device-pixel-ratio:0) {
         #scaled-frame {
           zoom: 1;
+        }
+        @media all and (orientation:landscape)
+        {
+            #scaled-frame {
+                zoom: 3;
+            }
         }
       }
     </style>
