@@ -1,0 +1,61 @@
+#vae-embed-container {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    max-width: 1200px;
+    padding: 0px;
+    margin: 0 auto;
+}
+  
+#vae-embed-container #furioos-container {
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    position: relative;
+}
+
+#vae-embed-container #cover {
+    position: absolute; 
+    z-index:99; 
+    width:100%; 
+    height:100%; 
+    top:0; 
+    background-color: black;
+}
+
+#vae-embed-container #loading-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 100vw;
+    height: auto;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+
+#vae-embed-container #loading-spinner {
+    position:absolute; 
+    z-index:100; 
+    left:50%; 
+    top:50%; 
+    width:13%; 
+    border:none; 
+    transform: translate(-50%, -38%);
+}
+
+#vae-embed-container #button-start {
+    position:absolute; 
+    z-index:100; 
+    visibility: hidden; 
+    left:50%; 
+    top:52.9%; 
+    width:8.2%; 
+    border:none; 
+    transform: translate(-50%, -50%); 
+    background-color: transparent; 
+    padding: 0;
+}
+
+#vae-embed-container #button-start-image {
+    width:100%; 
+    height:100%;
+}
