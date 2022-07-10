@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+    <body>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe id="camera_view" class="embed-responsive-item container well well-small span6" style="background-color: #2e2e2e;" src="https://portal.furioos.com/embed/8ZEewSkpwyuEnn8pN?whiteLabel=true&hideTitle=true&hideToolbar=false">
+         </div>
+        <div>
+    </div>
+      <p id="p1" style="color:blue;font-size:60px;">...Scanning for orientation and screen width...</p>
+      <p id="p2" style="color:blue;font-size:60px;"></p>
+      <p id="p3" style="color:blue;font-size:60px;">...Attempting to lock in landscape...</p>
+      <script>
+        document.getElementById("p1").innerHTML = "window.orientation " + window.orientation + "    screen.width " + screen.width;
+        document.getElementById("p2").innerHTML = window.orientation == 90 ? "Detecting LANDSCAPE" : "Detecting PORTAIT";
+
+        // Detect whether device supports orientationchange event, otherwise fall back to
+        // the resize event.
+        var supportsOrientationChange = "onorientationchange" in window,
+            orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+        
+        window.addEventListener(orientationEvent, function() {
+           // alert('ROTATION DETECTED: ' + window.orientation + " " + screen.width);
+           document.getElementById("p1").innerHTML = "window.orientation " + window.orientation + "    screen.width " + screen.width;
+           var curMode = window.orientation == 90 ? "Detecting LANDSCAPE" : "Detecting PORTAIT";
+           document.getElementById("p2").innerHTML = curMode;
+
+           if(window.orientation != 90)
+           {
+
+           }
+        }, false);
+
+        /*
+        if (screen.orientation.lock("landscape")) {
+            document.getElementById("p3").innerHTML = "screen.orientation.lock Lock in landscape OK"; 
+        } else {
+            document.getElementById("p3").innerHTML = "screen.orientation.lock Lock in landscape FAILED"; 
+        }
+        */
+      </script>
+    </body>
+    </html>
