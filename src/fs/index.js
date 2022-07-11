@@ -1,7 +1,7 @@
 
 const { Player, FS_SDK_EVENTS_NAME, FS_QUALITY_VALUES } = window.furioos;
 
-const SHARED_LINK = 'XwnDTGrmeyGb7PGkD'; // Set your shared link here
+const SHARED_LINK = '8YchpkybGg4u4pukR'; // Set your shared link here
 
 // CONF
 const player = new Player(SHARED_LINK, 'furioos_container', {
