@@ -2,25 +2,38 @@
 <html>
   <head></head>
     <body>
-        <div id="furioos_container">
-          <p>1</p>
+        <div id="f1">
+          <p>111</p>
      <!-- <iframe src="https://portal.furioos.com/embed/8ZEewSkpwyuEnn8pN?whiteLabel=true&hideTitle=true&hideToolbar=false&autoRun=false" width="100%" height="100%" allowfullscreen="true" style="border: none;"></iframe>
      -->
-      <iframe src="https://portal.furioos.com/embed/8ZEewSkpwyuEnn8pN?hideToolbar=false" allowfullscreen="true" width="1920" height="1080" style="border: none;"></iframe>  
+      <iframe id="f2" src="https://portal.furioos.com/embed/8ZEewSkpwyuEnn8pN?hideToolbar=false" allowfullscreen="true" width="1920" height="1080" style="border: none;"></iframe>  
     </div>
     <!--
     <p id="p1" style="color:blue;font-size:60px;">...Scanning for orientation and screen width...</p>
     <p id="p2" style="color:blue;font-size:60px;"></p>
     <p id="p3" style="color:blue;font-size:60px;">...Attempting to lock in landscape...</p> -->
       <script>
+        /*
           if (!document.fullscreenElement) { // mac firefox and chrome
-            const container = document.getElementById('furioos_container');
+            const container = document.getElementById('f1');
             container.requestFullscreen().catch(err => {
               alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
         });
   } else {
     document.exitFullscreen();
   }
+  */
+
+  if (!document.fullscreenElement) { // mac firefox and chrome
+            const container = document.getElementById('f2');
+            container.requestFullscreen().catch(err => {
+              alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
+  } else {
+    document.exitFullscreen();
+  }
+
+
         /*
         document.getElementById("p1").innerHTML = "window.orientation " + window.orientation + "    screen.width " + screen.width;
         document.getElementById("p2").innerHTML = window.orientation == 90 ? "Detecting LANDSCAPE" : "Detecting PORTAIT";
